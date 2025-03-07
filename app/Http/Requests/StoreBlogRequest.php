@@ -24,7 +24,7 @@ class StoreBlogRequest extends FormRequest
         return [
             'blog_title'=> 'required',
             'blog_description'=> 'required',
-            'blog_image'=> 'required'
+            'media'=> 'required'
         ];
     }
 }

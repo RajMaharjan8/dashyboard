@@ -24,14 +24,14 @@ export default function Create(){
     const { data, setData, post, processing, errors } = useForm({
         blog_title: '',
         blog_description: '',
-        blog_image: null as File | null,
+        media: null as File | null,
         remember: false,
       })
 
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
         if(e.target.files){
-            setData('blog_image', e.target.files[0]);
+            setData('media', e.target.files[0]);
         }
     }
     const submit = (e: FormEvent)=>{
@@ -57,8 +57,8 @@ export default function Create(){
 
                                 <div className="grid w-full max-w-sm items-center gap-1.5">
                                     <Label htmlFor="picture">Picture</Label>
-                                    <Input id="picture" type="file" name="blog_image" onChange={handleFileChange}/>
-                                    {errors.blog_image && <div className='text-red-500'>{errors.blog_image}</div>}
+                                    <Input id="picture" type="file" name="media" onChange={handleFileChange}/>
+                                    {errors.media && <div className='text-red-500'>{errors.media}</div>}
 
                                 </div>
 

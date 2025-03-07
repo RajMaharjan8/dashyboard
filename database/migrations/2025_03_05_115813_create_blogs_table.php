@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('blog_title');
             $table->longText('blog_description');
-            $table->string('blog_image');
+            $table->string('media');
             $table->integer('category_id')->nullable();
             $table->longText('meta_title')->nullable();
             $table->longText('meta_description')->nullable();

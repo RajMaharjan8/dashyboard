@@ -30,27 +30,39 @@ interface ListProps{
     items: string[]
 }
 
+interface Blog{
+    id: number;
+    blog_title: string;
+
+}
+
 export default function List(props: ListProps){
 
-    const [data, setData] = useState([]);
+    const [data, setData] = useState<Blog[]>([]);
     const [searchTitle, setSearchTitle] = useState("");
+    const [page, setPage] = useState(1);
+    const [loading, setLoading] = useState<boolean>(false);
 
-    const fetchData = async(page: number) =>{
+    const fetchData = async(page: number, searchTitle: string) =>{
+        setLoading(true);
         let url = route('blog.paginate');
         try{
             const response = await axios.get(
                 url + "?page="+page + "&title="+searchTitle
             );
-            setData(response.data);
+            setData(response.data.data);
         }catch(error){
             console.log(error);
+        }finally {
+            setLoading(false);
         }
     }
 
     useEffect(()=>{
-        fetchData(1);
-        console.log("text: "+data);
-    },[]);
+        fetchData(page, searchTitle);
+    },[page, searchTitle]);
+
+
 
     return(
        <AppLayout breadcrumbs={breadcrumbs}>
@@ -72,23 +84,35 @@ export default function List(props: ListProps){
                             <TableRow>
                                 <TableHead className="w-[100px]">S.N.</TableHead>
                                 <TableHead>Blog Name</TableHead>
-                                <TableHead>Blog Category</TableHead>
                                 <TableHead className="text-right">Actions</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            <TableRow>
+                            {
+                                data.length > 0 ? (
+                                    data.map((item, index) => (
+                                        <TableRow key={item.id}>
+                                            <TableCell className="font-medium">{index + 1}</TableCell>
+                                            <TableCell>{item.blog_title}</TableCell>
+                                            <TableCell className="text-right">
 
+                                                    <Button variant="secondary" className="mr-2">
+                                                        Edit
+                                                    </Button>
+                                                <Button variant="destructive">Delete</Button>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))
+                                ):
+                                (
+                                    <TableRow>
+                                        <TableCell colSpan={4} className="text-center">
+                                            No blogs found
+                                        </TableCell>
+                                    </TableRow>
+                                )
+                            }
 
-                                <TableCell className="font-medium">INV001</TableCell>
-                                    <TableCell>Paid</TableCell>
-                                    <TableCell>Credit Card</TableCell>
-                                    <TableCell className="text-right">
-                                        <Button variant="secondary" className='mr-2'>Edit</Button>
-                                        <Button variant="destructive">Delete</Button>
-
-                                </TableCell>
-                            </TableRow>
                         </TableBody>
                     </Table>
 
