@@ -1,31 +1,28 @@
 <?php
 
 namespace App;
-use App\Helpers\FileUploadHelper;
 use Illuminate\Http\Request;
 
 trait CrudTrait
 {
 
-    public function store(){
-        // $validate = $request->validate($this->store_rules);
+    public function store(Request $request){
+        $request_class = $this->store_rules;
+        $validate_request = app($request_class);
+        $validator = validator($request->all(), $validate_request->rules());
+        $validated = $validator->validated();
 
-        $request= $this->store_rules->validated();
-        dd($request);
-        $file = $request->hasFile('media');
-
-        if($file){
+        if($request->hasFile('media')){
             $file = $request->file('media');
             $file_upload = $this->fileuploader->storeFile($file, $this->model);
             if($file_upload){
-                $request->media = $file_upload;
+                $validated['media'] = $file_upload;
             }else{
-                $request->media = null;
+                $validated['media'] = null;
             }
-
         }
 
-        $store_data = $this->model->create($validate);
+        $store_data = $this->model->create($validated);
 
         return redirect()->route($this->route)->with('toasterInfo', [
                     'show' => true,
@@ -46,7 +43,7 @@ trait CrudTrait
         if(isset($title)){
             $model = $this->model->where('title', 'ilike', '%'. $title .'%');
         }
-        $data = $model->orderByDesc('id')->paginate(10);
+        $data = $model->orderByDesc('id')->paginate(5);
         return response()->json($data);
     }
 

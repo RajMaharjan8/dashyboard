@@ -3,6 +3,15 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 import axios from "axios";
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+  } from "@/components/ui/pagination"
 
 import {
     Table,
@@ -42,6 +51,7 @@ export default function List(props: ListProps){
     const [searchTitle, setSearchTitle] = useState("");
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState<boolean>(false);
+    const [totalPage, setTotalPage] = useState<number>(1);
 
     const fetchData = async(page: number, searchTitle: string) =>{
         setLoading(true);
@@ -51,6 +61,8 @@ export default function List(props: ListProps){
                 url + "?page="+page + "&title="+searchTitle
             );
             setData(response.data.data);
+            setTotalPage(response.data.last_page);
+            setPage(response.data.current_page);
         }catch(error){
             console.log(error);
         }finally {
@@ -58,9 +70,29 @@ export default function List(props: ListProps){
         }
     }
 
+    const previousPage = () => {
+        if (page > 1) {
+            const newPage = page - 1;
+            setPage(newPage);
+            fetchData(newPage, searchTitle);
+        }
+    };
+
+    const nextPage = () => {
+        if (page < totalPage) {
+            const newPage = page + 1;
+            setPage(newPage);
+            fetchData(newPage, searchTitle);
+        }
+    };
+
     useEffect(()=>{
         fetchData(page, searchTitle);
     },[page, searchTitle]);
+
+
+
+
 
 
 
@@ -115,6 +147,38 @@ export default function List(props: ListProps){
 
                         </TableBody>
                     </Table>
+                    <Pagination>
+                        <PaginationContent>
+                            <PaginationItem>
+                            <PaginationPrevious onClick={()=>previousPage()} />
+                            </PaginationItem>
+
+                            {
+                                [...Array(totalPage)].map((_, i)=>{
+                                    const pageNumber = i + 1;
+                                    return(
+                                        <>
+                                            <PaginationItem>
+                                                <PaginationLink >{pageNumber}</PaginationLink>
+                                            </PaginationItem>
+
+                                        </>
+
+                                    );
+                                })
+
+                            }
+                            {/*
+                            <PaginationItem>
+                            <PaginationEllipsis />
+                            </PaginationItem> */}
+
+
+                            <PaginationItem>
+                            <PaginationNext onClick={()=>nextPage()}/>
+                            </PaginationItem>
+                        </PaginationContent>
+                    </Pagination>
 
                 </div>
         </AppLayout>
