@@ -34,5 +34,14 @@ class BlogController extends Controller
         return Inertia::render('blogs/create');
     }
 
+    public function edit($id){
+        $blog = $this->model->findOrFail($id);
+        if(isset($blog->media)){
+            $blog->media = env('APP_URL').$blog->media;
+        }
+        return Inertia::render('blogs/edit',[
+            'blog'=> $blog
+        ]);
+    }
 
 }

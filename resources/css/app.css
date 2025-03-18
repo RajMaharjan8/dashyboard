@@ -147,6 +147,19 @@
     --sidebar-ring: hsl(217.2, 91.2%, 59.8%);
 }
 
+.jodit_theme_summer {
+    --jd-color-background-default: #0f0f0f;
+    --jd-color-border: #262626;
+    --jd-color-panel: #000000;
+    --jd-color-icon: #ffffff;
+    --jd-color-text: #ffffff;
+    --jd-color-link: #00bcd4;
+}
+.jodit-editor {
+    height: 500px; 
+}
+
+
 @layer base {
     * {
         @apply border-border;

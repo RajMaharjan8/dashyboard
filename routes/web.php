@@ -3,13 +3,15 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use  App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\Front\BlogController as FrontBlogController;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
 })->name('home');
 
+Route::get('/articles', [FrontBlogController::class, 'index'])->name('blog.index');
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');

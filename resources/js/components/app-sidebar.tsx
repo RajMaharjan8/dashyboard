@@ -10,13 +10,20 @@ import AppLogo from './app-logo';
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
-        url: '/dashboard',
+        url: '/admin/dashboard',
         icon: LayoutGrid,
     },
     {
         title: 'Blogs',
-        url: route('blog.index'),
+        url: '/admin/blog',
         icon: BookOpenIcon,
+        // children: [
+        //     {
+        //         title: 'Blog Categories',
+        //         url: '/blog/categories',  
+        //         icon: Folder,
+        //     }
+        // ]
 
     }
 ];

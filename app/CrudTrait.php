@@ -41,7 +41,7 @@ trait CrudTrait
         $title = $request->get('title');
         $model = $this->model;
         if(isset($title)){
-            $model = $this->model->where('title', 'ilike', '%'. $title .'%');
+            $model = $this->model->where('blog_title', 'like', '%'. $title .'%');
         }
         $data = $model->orderByDesc('id')->paginate(5);
         return response()->json($data);
