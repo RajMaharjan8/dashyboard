@@ -11,8 +11,8 @@ import CustomPagination from '../components/pagination';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Blogs',
-        href: '/blogs',
+        title: 'Pages',
+        href: '/pages',
     },
 ];
 
@@ -20,24 +20,22 @@ const breadcrumbs: BreadcrumbItem[] = [
 interface ListProps {
 }
 
-interface Blog {
+interface Page {
     id: number;
-    blog_title: string;
+    title: string;
 }
 
 export default function List(props: ListProps) {
-    const [data, setData] = useState<Blog[]>([]);
+    const [data, setData] = useState<Page[]>([]);
     const [searchTitle, setSearchTitle] = useState('');
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState<boolean>(false);
     const [totalPage, setTotalPage] = useState<number>(1);
     const [currentPage, setCurrentPage] = useState<number>(1);
 
-    
-
     const fetchData = async (page: number, searchTitle: string) => {
         setLoading(true);
-        let url = route('blog.paginate');
+        let url = route('pages.paginate');
         try {
             const response = await axios.get(url + '?page=' + page + '&title=' + searchTitle);
             setData(response.data.data);
@@ -65,7 +63,7 @@ export default function List(props: ListProps) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Blogs" />
+            <Head title="Pages" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 <div className="flex justify-between">
                     <div className="flex items-center justify-center gap-2">
@@ -79,8 +77,8 @@ export default function List(props: ListProps) {
                         {/* <Button type="submit">Search</Button> */}
                     </div>
 
-                    <Link href={route('blog.create')}>
-                        <Button type="submit">Add New Blog</Button>
+                    <Link href={route('pages.create')}>
+                        <Button type="submit">Add New Pages</Button>
                     </Link>
                 </div>
 
@@ -88,7 +86,7 @@ export default function List(props: ListProps) {
                     <TableHeader>
                         <TableRow>
                             <TableHead className="w-[100px]">S.N.</TableHead>
-                            <TableHead>Blog Name</TableHead>
+                            <TableHead>Pages Name</TableHead>
                             <TableHead className="text-right">Actions</TableHead>
                         </TableRow>
                     </TableHeader>
@@ -97,9 +95,9 @@ export default function List(props: ListProps) {
                             data.map((item, index) => (
                                 <TableRow key={item.id}>
                                     <TableCell className="font-medium">{index + 1}</TableCell>
-                                    <TableCell>{item.blog_title}</TableCell>
+                                    <TableCell>{item.title}</TableCell>
                                     <TableCell className="text-right">
-                                        <Link href={route('blog.edit', { id: item.id })}>
+                                        <Link href={route('pages.edit', { id: item.id })}>
                                             <Button variant="secondary" className="mr-2">
                                                 Edit
                                             </Button>
@@ -112,7 +110,7 @@ export default function List(props: ListProps) {
                         ) : (
                             <TableRow>
                                 <TableCell colSpan={4} className="text-center">
-                                    No blogs found
+                                    No data found
                                 </TableCell>
                             </TableRow>
                         )}

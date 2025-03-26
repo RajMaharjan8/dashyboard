@@ -10,32 +10,32 @@ import { useDropzone } from 'react-dropzone';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Blogs / Create',
-        href: '/blog',
+        title: 'Letters / Create',
+        href: '/letters',
     },
 ];
 
-interface Blog {
+interface Letter {
     model: {
         id: bigint;
-        blog_title: string;
-        blog_description: string;
+        title: string;
+        description: string;
         media: string;
     };
 }
 
 interface FormData {
-    blog_title: string;
-    blog_description: string;
+    title: string;
+    description: string;
     media: File | null;
     remember: boolean;
     [key: string]: any;
 }
 
-export default function Create(props: Blog) {
+export default function Create(props: Letter) {
     const { data, setData, post, processing, errors } = useForm<FormData>({
-        blog_title: props.model?.blog_title ?? '',
-        blog_description: props.model?.blog_description ?? '',
+        title: props.model?.title ?? '',
+        description: props.model?.description ?? '',
         media: null,
         _method: props.model?.id ? 'PUT' : 'POST',
         remember: false,
@@ -51,17 +51,17 @@ export default function Create(props: Blog) {
         e.preventDefault();
 
         {
-            props.model?.id ? post(route('blog.update', [props.model?.id])) : post(route('blog.store'));
+            props.model?.id ? post(route('letters.update', [props.model?.id])) : post(route('letters.store'));
         }
     };
 
     //Editor
     const editor = useRef(null);
-    const [content, setContent] = useState(data.blog_description || '');
+    const [content, setContent] = useState(data.description || '');
 
     const handleEditorChange = (newContent: string) => {
         setContent(newContent);
-        setData('blog_description', newContent);
+        setData('description', newContent);
     };
     const editorConfig = {
         theme: 'dark',
@@ -93,19 +93,19 @@ export default function Create(props: Blog) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Blogs" />
+            <Head title="Letters" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 <div className="container">
                     <form onSubmit={submit}>
                         <div className="mb-4 flex flex-col gap-2">
                             <Input
                                 type="text"
-                                placeholder="Blog Name"
-                                value={data.blog_title}
-                                name="blog_title"
-                                onChange={(e) => setData('blog_title', e.target.value)}
+                                placeholder="Letters Name"
+                                value={data.title}
+                                name="title"
+                                onChange={(e) => setData('title', e.target.value)}
                             />
-                            {errors.blog_title && <div className="text-red-500">{errors.blog_title}</div>}
+                            {errors.title && <div className="text-red-500">{errors.title}</div>}
 
                             <JoditEditor
                                 className="jodit-editor font-black"
@@ -116,7 +116,7 @@ export default function Create(props: Blog) {
                                 config={editorConfig}
                             />
 
-                            {errors.blog_description && <div className="text-red-500">{errors.blog_description}</div>}
+                            {errors.description && <div className="text-red-500">{errors.description}</div>}
 
                             <div className="mt-5 grid w-full max-w-sm items-center gap-1.5">
                                 <Label htmlFor="picture">Picture</Label>
@@ -125,7 +125,7 @@ export default function Create(props: Blog) {
                                         <h4 className="mt-4">Current Image</h4>
                                         <img
                                             src={props.model.media}
-                                            alt="Blog media"
+                                            alt="media"
                                             className="h-auto max-w-full rounded-lg"
                                             style={{ maxHeight: '200px' }}
                                         />

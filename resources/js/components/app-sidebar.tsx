@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, BookOpenIcon, Folder, LayoutGrid } from 'lucide-react';
+import { BookOpen, BookOpenIcon, Folder, FolderArchiveIcon, KeyIcon, LayoutGrid, Lock, PersonStanding, PersonStandingIcon } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -13,18 +13,30 @@ const mainNavItems: NavItem[] = [
         url: '/admin/dashboard',
         icon: LayoutGrid,
     },
+    // {
+    //     title: 'Blogs',
+    //     url: '/admin/blog',
+    //     icon: BookOpenIcon,
+    // },
     {
-        title: 'Blogs',
-        url: '/admin/blog',
-        icon: BookOpenIcon,
-        // children: [
-        //     {
-        //         title: 'Blog Categories',
-        //         url: '/blog/categories',  
-        //         icon: Folder,
-        //     }
-        // ]
-
+        title: 'Blog Category',
+        url: '/admin/blogcategories',
+        icon: FolderArchiveIcon,
+    },
+    {
+        title: 'Permissions',
+        url: '/admin/permissions',
+        icon: KeyIcon,
+    },
+    {
+        title: 'Roles',
+        url: '/admin/roles',
+        icon: Lock,
+    },
+    {
+        title: 'Users',
+        url: '/admin/users',
+        icon: PersonStandingIcon,
     }
 ];
 

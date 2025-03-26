@@ -1,5 +1,16 @@
 <?php
 
+use App\Http\Controllers\Admin\VideoController;
+use App\Http\Controllers\Admin\HelperController;
+use App\Http\Controllers\Admin\LetterController;
+
+use App\Http\Controllers\Admin\UserController;
+
+use App\Http\Controllers\Admin\RoleController;
+
+use App\Http\Controllers\Admin\PermissionController;
+
+use App\Http\Controllers\Admin\BlogCategoryController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use  App\Http\Controllers\Admin\BlogController;
@@ -16,9 +27,27 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
 
-    Route::get('blog/paginate',[BlogController::class, 'paginate'])->name('blog.paginate');
+    Route::get('blog/paginate', [BlogController::class, 'paginate'])->name('blog.paginate');
     Route::resource('blog', BlogController::class);
+
+    Route::get('permissions/paginate', [PermissionController::class, 'paginate'])->name('permissions.paginate');
+    Route::resource('permissions', PermissionController::class);
+
+    Route::get('roles/paginate', [RoleController::class, 'paginate'])->name('roles.paginate');
+    Route::resource('roles', RoleController::class);
+
+    Route::get('users/paginate', [UserController::class, 'paginate'])->name('users.paginate');
+    Route::resource('users', UserController::class);
+
+    Route::get('blogcategories/paginate', [BlogCategoryController::class, 'paginate'])->name('blogcategories.paginate');
+    Route::resource('blogcategories', BlogCategoryController::class);
+
+    Route::get('helpers/paginate', [HelperController::class, 'paginate'])->name('helpers.paginate');
+    Route::resource('helpers', HelperController::class);
+
+    Route::get('videos/paginate', [VideoController::class, 'paginate'])->name('videos.paginate');
+    Route::resource('videos', VideoController::class);
 });
 
-require __DIR__.'/settings.php';
-require __DIR__.'/auth.php';
+require __DIR__ . '/settings.php';
+require __DIR__ . '/auth.php';
