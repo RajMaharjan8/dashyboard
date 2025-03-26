@@ -116,9 +116,11 @@ trait CrudTrait
         $model = $this->model->findOrFail($id);
         $model->update($validated);
 
+        //Permission code
         if (isset($validated['role'])) {
             $model->syncRoles($validated['role']);
         }
+        
         if ($model->save()) {
 
 

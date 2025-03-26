@@ -106,7 +106,7 @@ class GenerateModel extends Command
             //Making Permissions 
             $make_permissions = $this->ask('Do you want to make permission (EDIT,ADD,UPDATE,DELETE)? ("yes" or "no")');
             if ($make_permissions == "y" || $make_permissions == "yes" || $make_permissions == "Yes" || $make_permissions == "YES") {
-                $this->createPermissions($model_subtitle);
+                $this->createPermissions($model_subtitle, $model_name);
             }
         }
     }
@@ -201,7 +201,7 @@ class GenerateModel extends Command
         $this->info("Routes for $model_subtitle added to routes/web.php");
     }
 
-    public function createPermissions($permission_model)
+    public function createPermissions($permission_model, $model_name)
     {
         $permission_model = ucwords($permission_model);
         $permissions = [
@@ -217,7 +217,8 @@ class GenerateModel extends Command
             if (!$existingPermission) {
                 $newPermission = Permission::create([
                     "name" => $permission,
-                    'guard_name' => 'web'
+                    'guard_name' => 'web',
+                    'group_name'=> $model_name
                 ]);
     
             }

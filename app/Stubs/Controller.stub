@@ -20,8 +20,8 @@ class {{CONTROLLER}} extends Controller
         $this->model = $model;
         $this->fileuploader = $fileuploader;
         $this->route = 'model.index';
-        $this->index_path = 'model/list';
-        $this->form_path = 'model/create';
+        $this->index_path = 'admin/model/list';
+        $this->form_path = 'admin/model/edit-add';
         $this->store_rules = {{REQUEST}}::class;
     }
 

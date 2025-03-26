@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('helpers', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('permissions', function (Blueprint $table) {
+            $table->string('group_name')->nullable();
         });
     }
 
@@ -22,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('helpers');
+        Schema::table('permissions', function (Blueprint $table) {
+            $table->dropColumn('group_name');
+        });
     }
 };

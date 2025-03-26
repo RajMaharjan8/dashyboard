@@ -2,12 +2,11 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
-import { Head, Link } from '@inertiajs/react';
-import axios from 'axios';
-import { useCallback, useEffect, useState } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
 import CustomPagination from '@/pages/components/pagination';
+import { type BreadcrumbItem } from '@/types';
+import { Head, Link, useForm } from '@inertiajs/react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -16,22 +15,23 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
+interface ListProps {}
 
-interface ListProps {
-}
-
-interface Permission {
+interface Role {
     id: number;
     name: string;
+    group: string;
 }
 
 export default function List(props: ListProps) {
-    const [data, setData] = useState<Permission[]>([]);
+    const [data, setData] = useState<Role[]>([]);
     const [searchTitle, setSearchTitle] = useState('');
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState<boolean>(false);
     const [totalPage, setTotalPage] = useState<number>(1);
     const [currentPage, setCurrentPage] = useState<number>(1);
+
+    const { delete: destroy } = useForm(); 
 
     const fetchData = async (page: number, searchTitle: string) => {
         setLoading(true);
@@ -56,11 +56,28 @@ export default function List(props: ListProps) {
         }
     };
 
-   
+    useEffect(() => {
+        fetchData(page, searchTitle);
+    }, [page, searchTitle, currentPage]);
+
+    const handleDelete = (e: React.MouseEvent, id: number) => {
+        e.preventDefault();
+
+        if (confirm('Are you sure you want to delete this permission?')) {
+            destroy(route('permissions.destroy', id), {
+                onSuccess: () => {
+                    fetchData(page, searchTitle);
+                },
+                onError: (errors) => {
+                    console.log(errors);
+                },
+            });
+        }
+    };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Permissions" />
+            <Head title="Roles" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 <div className="flex justify-between">
                     <div className="flex items-center justify-center gap-2">
@@ -74,8 +91,8 @@ export default function List(props: ListProps) {
                         {/* <Button type="submit">Search</Button> */}
                     </div>
 
-                    <Link href={route('permissions.create')}>
-                        <Button type="submit">Add New Permissions</Button>
+                    <Link href={route('roles.create')}>
+                        <Button type="submit">Add New Roles</Button>
                     </Link>
                 </div>
 
@@ -83,7 +100,9 @@ export default function List(props: ListProps) {
                     <TableHeader>
                         <TableRow>
                             <TableHead className="w-[100px]">S.N.</TableHead>
-                            <TableHead>Permissions Name</TableHead>
+                            <TableHead>Roles Name</TableHead>
+                            <TableHead>Group Name</TableHead>
+
                             <TableHead className="text-right">Actions</TableHead>
                         </TableRow>
                     </TableHeader>
@@ -93,14 +112,19 @@ export default function List(props: ListProps) {
                                 <TableRow key={item.id}>
                                     <TableCell className="font-medium">{index + 1}</TableCell>
                                     <TableCell>{item.name}</TableCell>
+                                    <TableCell>{item.group ?? 'N/A'}</TableCell>
+
                                     <TableCell className="text-right">
-                                        <Link href={route('permissions.edit', { id: item.id })}>
+                                        <Link href={route('roles.edit', { id: item.id })}>
                                             <Button variant="secondary" className="mr-2">
                                                 Edit
                                             </Button>
                                         </Link>
 
-                                        <Button onClick={handleDelete( item.id)} variant="destructive">Delete</Button>
+                                        <Button 
+                                            onClick={(e) => handleDelete(e, item.id)} 
+                                            variant="destructive"
+                                        >Delete</Button>
                                     </TableCell>
                                 </TableRow>
                             ))

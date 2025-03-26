@@ -18,11 +18,11 @@ const mainNavItems: NavItem[] = [
     //     url: '/admin/blog',
     //     icon: BookOpenIcon,
     // },
-    {
-        title: 'Blog Category',
-        url: '/admin/blogcategories',
-        icon: FolderArchiveIcon,
-    },
+    // {
+    //     title: 'Blog Category',
+    //     url: '/admin/blogcategories',
+    //     icon: FolderArchiveIcon,
+    // },
     {
         title: 'Permissions',
         url: '/admin/permissions',
